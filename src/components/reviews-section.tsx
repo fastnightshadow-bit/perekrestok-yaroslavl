@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowLeft, ArrowRight, BadgeCheck } from "lucide-react";
+import Link from "next/link";
 import { useRef } from "react";
 
 import { EmptyState } from "@/components/empty-state";
@@ -129,7 +130,7 @@ export function ReviewsSection({
               className="border-white/20 bg-white/5 text-white hover:border-white/45 hover:bg-white/10"
               variant="outline"
             >
-              <a href="/reviews">Смотреть все отзывы</a>
+              <Link href="/reviews">Смотреть все отзывы</Link>
             </Button>
             <p className="mt-4 text-xs font-medium uppercase tracking-[0.1em] text-white/55">
               Отзывы опубликованы на официальном сайте автошколы
