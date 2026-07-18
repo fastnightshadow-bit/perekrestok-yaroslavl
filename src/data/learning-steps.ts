@@ -3,9 +3,8 @@ import {
   BookOpen,
   CarFront,
   ClipboardCheck,
-  FileCheck2,
-  MessageCircle,
   Send,
+  Stethoscope,
   type LucideIcon,
 } from "lucide-react";
 
@@ -13,50 +12,59 @@ export type LearningStep = {
   id: string;
   title: string;
   description: string;
+  details?: string[];
   icon: LucideIcon;
 };
 
 export const learningSteps: LearningStep[] = [
   {
     id: "application",
-    title: "Оставляете заявку",
-    description: "Выбираете удобный способ связи и оставляете контакты.",
+    title: "Подайте заявку на обучение",
+    description:
+      "Оставьте телефон или позвоните — администратор ответит на вопросы и расскажет о ближайшем наборе.",
     icon: Send,
   },
   {
-    id: "consultation",
-    title: "Консультация",
-    description: "Отвечаем на вопросы и подбираем программу обучения.",
-    icon: MessageCircle,
-  },
-  {
-    id: "contract",
-    title: "Заключение договора",
-    description: "Фиксируем условия, график и порядок оплаты.",
-    icon: FileCheck2,
+    id: "medical",
+    title: "Пройдите медкомиссию",
+    description:
+      "Для допуска к вождению потребуется медицинское заключение от четырёх специалистов.",
+    details: ["Психиатр", "Психиатр-нарколог", "Офтальмолог", "Терапевт"],
+    icon: Stethoscope,
   },
   {
     id: "theory",
-    title: "Изучение теории",
-    description: "Разбираете правила и дорожные ситуации без перегруза.",
+    title: "Изучайте теорию очно или онлайн",
+    description:
+      "Разбирайте правила и дорожные ситуации в удобном формате, закрепляя темы проверочными заданиями.",
     icon: BookOpen,
   },
   {
     id: "practice",
-    title: "Практические занятия",
-    description: "Осваиваете автомобиль вместе с инструктором.",
+    title: "Учитесь водить с инструктором",
+    description:
+      "Осваивайте автомобиль, городские маршруты и экзаменационные упражнения в спокойном темпе.",
     icon: CarFront,
   },
   {
-    id: "exam",
-    title: "Экзамен",
-    description: "Закрепляете знания и проходите экзаменационные этапы.",
+    id: "internal-exam",
+    title: "Пройдите внутренний экзамен",
+    description:
+      "Проверьте теорию и практические навыки в условиях, близких к будущему экзамену.",
+    icon: ClipboardCheck,
+  },
+  {
+    id: "gai-exam",
+    title: "Сдайте экзамен в ГАИ",
+    description:
+      "Автошкола подготовит необходимые документы и подскажет порядок прохождения экзамена.",
     icon: ClipboardCheck,
   },
   {
     id: "license",
-    title: "Получение водительского удостоверения",
-    description: "Завершаете обучение и получаете водительские права.",
+    title: "Получите водительское удостоверение",
+    description:
+      "После успешного экзамена останется получить права и начать самостоятельное вождение.",
     icon: BadgeCheck,
   },
 ];

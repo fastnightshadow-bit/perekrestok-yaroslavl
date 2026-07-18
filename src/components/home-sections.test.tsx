@@ -1,4 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
 import { renderWithEnrollment } from "@/test/render-with-enrollment";
@@ -30,54 +31,65 @@ describe("BenefitsSection", () => {
 });
 
 describe("PricingSection", () => {
-  it("shows every verified tariff and its exact price", () => {
+  it("presents category B and the two useful supporting services", () => {
     renderWithEnrollment(<PricingSection />);
 
     expect(
-      screen.getByRole("heading", {
-        name: "Понятная стоимость без скрытых платежей",
+      screen.getByRole("heading", { name: "Обучение категории B" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Категория B — МКПП / АКПП" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Восстановление навыков" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Переход из другой автошколы" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("47 600 ₽")).toBeInTheDocument();
+    expect(screen.getByText("Теория — 14 000 ₽")).toBeInTheDocument();
+    expect(screen.getByText("28 занятий по 90 минут — 1 200 ₽ каждое")).toBeInTheDocument();
+    expect(
+      screen.getAllByRole("button", {
+        name: "Узнать стоимость и свободные места",
       }),
+    ).toHaveLength(3);
+    expect(screen.queryByText("Все программы")).not.toBeInTheDocument();
+    expect(screen.queryByText("Посмотреть программу")).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/внутренний экзамен — 2 000 ₽/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(
-        "Выберите подходящий формат обучения. Возможна оплата частями.",
-      ),
+      screen.getByText(/первый экзамен в ГИБДД — 2 500 ₽/i),
     ).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Полный курс категории B" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Теоретическая подготовка" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Практическое вождение" })).toBeInTheDocument();
-    expect(screen.getByText("53 800 ₽")).toBeInTheDocument();
-    expect(screen.getByText("12 000 ₽")).toBeInTheDocument();
-    expect(screen.getByText("41 800 ₽")).toBeInTheDocument();
-    expect(screen.queryByText("Временная цена")).not.toBeInTheDocument();
-    expect(screen.getByText(/1 100 ₽ за 1,5 часа/)).toBeInTheDocument();
-    expect(screen.getByText(/экзамен ГИБДД оплачиваются отдельно/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Не уверены, какой тариф выбрать? Получите консультацию",
-      ),
-    ).toBeInTheDocument();
+  });
+
+  it("passes the selected service to the shared consultation form", async () => {
+    const user = userEvent.setup();
+    renderWithEnrollment(<PricingSection />);
+
+    const automaticCard = screen.getByRole("article", {
+      name: "Восстановление навыков",
+    });
+    await user.click(
+      within(automaticCard).getByRole("button", {
+        name: "Узнать стоимость и свободные места",
+      }),
+    );
+
+    expect(screen.getByLabelText("Выбранная программа")).toHaveValue(
+      "Восстановление навыков",
+    );
   });
 
   it("uses a telephone link for the consultation call action", () => {
     renderWithEnrollment(<PricingSection />);
 
     const section = screen.getByRole("region", {
-      name: "Понятная стоимость без скрытых платежей",
+      name: "Обучение категории B",
     });
     expect(
       within(section).getByRole("link", { name: "Позвонить" }),
     ).toHaveAttribute("href", "tel:+74852700303");
-  });
-
-  it("keeps the popular label in normal document flow", () => {
-    renderWithEnrollment(<PricingSection />);
-
-    const card = screen.getByRole("article", {
-      name: "Полный курс категории B",
-    });
-    const badge = within(card).getByText("Популярный выбор");
-
-    expect(badge).not.toHaveClass("absolute");
   });
 });

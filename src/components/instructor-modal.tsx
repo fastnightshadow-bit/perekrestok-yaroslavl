@@ -1,6 +1,6 @@
 "use client";
 
-import { CarFront, Check, X } from "lucide-react";
+import { CalendarDays, CarFront, Check, X } from "lucide-react";
 import Image from "next/image";
 import {
   type KeyboardEvent as ReactKeyboardEvent,
@@ -142,14 +142,27 @@ export function InstructorModal({
             Инструктор {instructor.name}
           </h2>
 
-          <div className="mt-7 rounded-[1.25rem] bg-neutral-100 p-5">
-            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-neutral-500">
-              <CarFront aria-hidden="true" size={17} strokeWidth={1.7} />
-              Учебный автомобиль
-            </p>
-            <p className="mt-2 font-semibold text-neutral-950">
-              {instructor.vehicle}
-            </p>
+          <div className="mt-7 grid gap-4 rounded-[1.25rem] bg-neutral-100 p-5 sm:grid-cols-2">
+            <div>
+              <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-neutral-500">
+                <CalendarDays aria-hidden="true" size={17} strokeWidth={1.7} />
+                Стаж работы
+              </p>
+              <p className="mt-2 font-semibold text-neutral-950">
+                С {instructor.sinceYear} года
+              </p>
+            </div>
+            {instructor.vehicle ? (
+              <div>
+                <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-neutral-500">
+                  <CarFront aria-hidden="true" size={17} strokeWidth={1.7} />
+                  Учебный автомобиль
+                </p>
+                <p className="mt-2 font-semibold text-neutral-950">
+                  {instructor.vehicle}
+                </p>
+              </div>
+            ) : null}
           </div>
 
           <p className="mt-7 text-base leading-7 text-neutral-600">
@@ -172,7 +185,7 @@ export function InstructorModal({
           </ul>
 
           <Button
-            className="mt-8 w-full"
+            className="mt-8 h-auto min-h-[3.75rem] w-full whitespace-normal px-5 py-3 text-center leading-5 sm:px-8"
             onClick={() => onEnroll(instructor)}
             size="lg"
           >

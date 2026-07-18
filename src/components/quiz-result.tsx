@@ -1,21 +1,19 @@
 "use client";
 
 import { CheckCircle2, RotateCcw } from "lucide-react";
-import { type FormEvent, useId, useState } from "react";
+import { type FormEvent, useId, useRef, useState } from "react";
 
+import { PersonalDataConsent } from "@/components/personal-data-consent";
 import { Button } from "@/components/ui/button";
-import type {
-  CompletedQuizAnswers,
-  QuizLeadPayload,
-} from "@/data/quiz";
-import type { Program } from "@/data/programs";
+import type { CompletedQuizAnswers, QuizLeadPayload } from "@/data/quiz";
 import { isValidPhone } from "@/lib/phone";
+import type { QuizRecommendation } from "@/lib/quiz";
 
 export type SubmitQuizLead = (payload: QuizLeadPayload) => Promise<void>;
 
 type QuizResultProps = {
   answers: CompletedQuizAnswers;
-  program: Program;
+  recommendation: QuizRecommendation;
   submitLead: SubmitQuizLead;
   onEditAnswers: () => void;
 };
@@ -35,7 +33,7 @@ const scheduleLabels: Record<CompletedQuizAnswers["schedule"], string> = {
 
 export function QuizResult({
   answers,
-  program,
+  recommendation,
   submitLead,
   onEditAnswers,
 }: QuizResultProps) {
@@ -44,10 +42,16 @@ export function QuizResult({
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState("");
   const [status, setStatus] = useState<SubmissionStatus>("idle");
+  const consentRef = useRef<HTMLInputElement>(null);
+  const formStartedAt = useRef(Date.now());
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (status === "loading") return;
+    const formData = new FormData(event.currentTarget);
 
     if (!isValidPhone(phone)) {
       setPhoneError("Введите корректный номер телефона");
@@ -55,14 +59,26 @@ export function QuizResult({
     }
 
     setPhoneError("");
+    if (!consent) {
+      setConsentError(
+        "Подтвердите согласие на обработку персональных данных",
+      );
+      consentRef.current?.focus();
+      return;
+    }
+
+    setConsentError("");
     setStatus("loading");
 
     try {
       await submitLead({
+        consent: true,
         name: name.trim(),
         phone: phone.trim(),
-        recommendedProgram: program.name,
+        recommendedProgram: recommendation.name,
         answers,
+        formStartedAt: formStartedAt.current,
+        website: String(formData.get("website") ?? ""),
       });
       setStatus("success");
     } catch {
@@ -83,8 +99,7 @@ export function QuizResult({
           Заявка принята
         </h3>
         <p className="mt-4 max-w-xl text-base leading-7 text-white/65 sm:text-lg">
-          Результат сохранён. Администратор сможет уточнить детали программы и
-          удобный график.
+          Администратор уточнит детали обучения и удобный график.
         </p>
       </div>
     );
@@ -97,22 +112,18 @@ export function QuizResult({
           Персональная рекомендация
         </p>
         <h3 className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.05em] text-white sm:text-5xl">
-          Вам подойдёт {program.name}
+          Вам подойдёт {recommendation.name}
         </h3>
         <p className="mt-5 max-w-xl text-base leading-7 text-white/65">
-          Этот формат соответствует выбранной цели и вашему опыту.
-          Занятия удобнее планировать {scheduleLabels[answers.schedule]}.
+          {recommendation.description} Занятия удобнее планировать{" "}
+          {scheduleLabels[answers.schedule]}.
         </p>
         <div className="mt-7 rounded-[1.25rem] border border-white/10 bg-white/[0.05] p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/45">
-            Формат
-          </p>
-          <p className="mt-2 font-semibold text-white">{program.format}</p>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-white/45">
-            Объём
+            Следующий шаг
           </p>
           <p className="mt-2 font-semibold text-white">
-            {program.volume}
+            Уточнить актуальную стоимость, график и свободные места
           </p>
         </div>
         <button
@@ -126,6 +137,7 @@ export function QuizResult({
       </div>
 
       <form
+        aria-busy={status === "loading"}
         className="rounded-[1.5rem] border border-white/10 bg-white/[0.055] p-5 sm:p-7"
         noValidate
         onSubmit={handleSubmit}
@@ -134,7 +146,8 @@ export function QuizResult({
           Получить консультацию
         </p>
         <p className="mt-2 text-sm leading-6 text-white/55">
-          Оставьте контакты — данные уже подготовлены для будущей отправки.
+          Оставьте контакты — администратор свяжется с вами и ответит на
+          вопросы.
         </p>
 
         <label className="mt-6 block text-sm font-semibold text-white/80">
@@ -166,9 +179,7 @@ export function QuizResult({
             inputMode="tel"
             onChange={(event) => {
               setPhone(event.target.value);
-              if (phoneError) {
-                setPhoneError("");
-              }
+              if (phoneError) setPhoneError("");
             }}
             placeholder="+7 (___) ___-__-__"
             required
@@ -193,9 +204,27 @@ export function QuizResult({
             id={formErrorId}
             role="alert"
           >
-            Не удалось отправить заявку. Попробуйте ещё раз.
+            Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.
           </p>
         ) : null}
+
+        <label aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+          Не заполняйте это поле
+          <input autoComplete="off" name="website" tabIndex={-1} type="text" />
+        </label>
+
+        <div className="mt-5">
+          <PersonalDataConsent
+            checked={consent}
+            error={consentError}
+            inputRef={consentRef}
+            onChange={(checked) => {
+              setConsent(checked);
+              if (checked) setConsentError("");
+            }}
+            tone="dark"
+          />
+        </div>
 
         <Button
           className="mt-6 w-full"

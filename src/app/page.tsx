@@ -8,7 +8,6 @@ import { Hero } from "@/components/hero";
 import { InstructorsSection } from "@/components/instructors-section";
 import { LearningTimeline } from "@/components/learning-timeline";
 import { ProgramQuiz } from "@/components/program-quiz";
-import { ProgramsSection } from "@/components/programs-section";
 import { PricingSection } from "@/components/pricing-section";
 import { ReviewsSection } from "@/components/reviews-section";
 import { SiteFooter } from "@/components/site-footer";
@@ -32,7 +31,6 @@ export default function Home() {
           <Hero />
           <BenefitsSection />
           <PricingSection />
-          <ProgramsSection />
           <ProgramQuiz />
           <LearningTimeline />
           <InstructorsSection />

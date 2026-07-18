@@ -15,8 +15,8 @@ export const siteConfig = {
     "Обучение вождению категории B в автошколе «Перекрёсток» в центре Ярославля. Более 85% учеников сдают с первого раза, доступна оплата частями.",
   contact: {
     address:
-      "г. Ярославль, ул. Республиканская, д. 3, корп. 1, оф. 405",
-    streetAddress: "ул. Республиканская, д. 3, корп. 1, оф. 405",
+      "г. Ярославль, ул. Республиканская, д. 3, корп. 1, оф. 405, 4 этаж",
+    streetAddress: "ул. Республиканская, д. 3, корп. 1, оф. 405, 4 этаж",
     locality: "Ярославль",
     region: "Ярославская область",
     country: "RU",
@@ -37,13 +37,30 @@ export const siteConfig = {
     ],
     routeHref:
       "https://yandex.ru/maps/org/perekrestok/1387073255/",
+    mapEmbedUrl:
+      "https://yandex.ru/map-widget/v1/?ll=39.883644%2C57.639569&mode=search&oid=1387073255&ol=biz&z=17.13",
   },
   social: {
     vk: "https://vk.com/perekrestok76",
     yandexMaps: "https://yandex.ru/maps/org/perekrestok/1387073255/",
+    yandexReviews:
+      "https://yandex.ru/maps/org/perekrestok/1387073255/reviews/",
   },
   legal: {
-    privacy: "https://perekrestok76.ru/politika",
+    privacy: publicPath("/privacy"),
+    consent: publicPath("/consent"),
+    cookies: publicPath("/cookies"),
+    operator: {
+      fullName:
+        "Общество с ограниченной ответственностью Автошкола «Перекрёсток»",
+      shortName: "ООО Автошкола «Перекрёсток»",
+      inn: "7620006816",
+      ogrn: "1177627032880",
+      legalAddress:
+        "152742, Ярославская область, Некоузский район, деревня Григорево, улица Светлая, дом 6",
+      email: "perekrestok.76@yandex.ru",
+      emailHref: "mailto:perekrestok.76@yandex.ru",
+    },
   },
   heroImage: publicPath("/images/perekrestok-hero.jpg"),
 } as const;

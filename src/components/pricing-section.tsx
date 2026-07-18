@@ -6,8 +6,7 @@ import { useEnrollment } from "@/components/enrollment-provider";
 import { PricingCard } from "@/components/pricing-card";
 import { Button } from "@/components/ui/button";
 import { contactDetails } from "@/data/contact";
-import { tariffs } from "@/data/home-content";
-import { schoolFacts } from "@/data/school-facts";
+import { trainingOptions } from "@/data/home-content";
 
 export function PricingSection() {
   const { openConsultation, openEnrollment } = useEnrollment();
@@ -15,42 +14,46 @@ export function PricingSection() {
   return (
     <section
       aria-labelledby="pricing-title"
-      className="bg-[#fafaf7] pb-20 pt-10 sm:pb-24 sm:pt-14 lg:pb-28"
+      className="relative bg-[#fafaf7] pb-20 pt-10 sm:pb-24 sm:pt-14 lg:pb-28"
       id="pricing"
     >
+      <span className="absolute -top-24" id="programs" />
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500 sm:text-sm">
-              Стоимость обучения
+              Стоимость и формат обучения
             </p>
             <h2
               className="mt-5 text-[clamp(2.35rem,4.2vw,4rem)] font-semibold leading-[1.02] tracking-[-0.055em] text-neutral-950"
               id="pricing-title"
             >
-              Понятная стоимость без скрытых платежей
+              Обучение категории B
             </h2>
           </div>
           <p className="max-w-xl text-base leading-7 text-neutral-600 sm:text-lg sm:leading-8 lg:max-w-md lg:pb-1">
-            Выберите подходящий формат обучения. Возможна оплата частями.
+            Основное обучение доступно на МКПП и АКПП. Здесь же —
+            дополнительные занятия и переход из другой автошколы.
           </p>
         </div>
 
-        <div className="mt-10 grid min-w-0 items-stretch gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3">
-          {tariffs.map((tariff, index) => (
-            <div
-              className={index === 2 ? "md:col-span-2 lg:col-span-1" : ""}
-              key={tariff.id}
-            >
-              <PricingCard onEnroll={openEnrollment} tariff={tariff} />
-            </div>
+        <div className="mt-10 grid min-w-0 items-stretch gap-5 sm:mt-14 md:grid-cols-2 xl:grid-cols-3">
+          {trainingOptions.map((option) => (
+            <PricingCard
+              key={option.id}
+              onEnroll={(program) => openEnrollment(program, "pricing")}
+              option={option}
+            />
           ))}
         </div>
 
         <div className="mt-6 rounded-2xl border border-neutral-200 bg-white px-5 py-4 text-sm leading-6 text-neutral-600 sm:px-6">
-          Отдельное практическое занятие — {schoolFacts.singleLessonPrice} за{" "}
-          {schoolFacts.singleLessonDuration}. Внутренний экзамен и экзамен
-          ГИБДД оплачиваются отдельно после обучения.
+          <strong className="font-semibold text-neutral-950">
+            Важно:
+          </strong>{" "}
+          внутренний экзамен — 2 000 ₽, первый экзамен в ГИБДД — 2 500 ₽,
+          повторный — 3 000 ₽. Госпошлина за водительское удостоверение —
+          4 000 ₽. Выход на экзамен — по готовности.
         </div>
 
         <div
@@ -59,16 +62,17 @@ export function PricingSection() {
         >
           <div>
             <p className="max-w-2xl text-xl font-semibold leading-snug tracking-[-0.03em] sm:text-2xl">
-              Не уверены, какой тариф выбрать? Получите консультацию
+              Не уверены, какой вариант подходит именно вам?
             </p>
             <p className="mt-2 text-sm leading-6 text-white/60">
-              Поможем разобраться в форматах и ответим на вопросы об обучении.
+              Администратор расскажет об обучении, дополнительных занятиях,
+              переходе и свободных местах.
             </p>
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <Button
               className="w-full sm:w-auto"
-              onClick={openConsultation}
+              onClick={() => openConsultation("pricing")}
               size="default"
             >
               Получить консультацию

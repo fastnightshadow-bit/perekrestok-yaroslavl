@@ -1,10 +1,6 @@
 export type QuizQuestionId = "goal" | "schedule" | "experience";
 
-export type GoalAnswerId =
-  | "full-course"
-  | "theory"
-  | "practice"
-  | "undecided";
+export type GoalAnswerId = "manual" | "automatic" | "undecided";
 
 export type ScheduleAnswerId =
   | "morning"
@@ -13,11 +9,7 @@ export type ScheduleAnswerId =
   | "weekends"
   | "unknown";
 
-export type ExperienceAnswerId =
-  | "never"
-  | "little"
-  | "restore"
-  | "exam";
+export type ExperienceAnswerId = "never" | "little" | "restore" | "exam";
 
 export type QuizAnswerId =
   | GoalAnswerId
@@ -50,18 +42,20 @@ export type QuizQuestion = {
 export type QuizLeadPayload = {
   name: string;
   phone: string;
+  consent: true;
   recommendedProgram: string;
   answers: CompletedQuizAnswers;
+  website: string;
+  formStartedAt: number;
 };
 
 export const quizQuestions: QuizQuestion[] = [
   {
     id: "goal",
-    title: "Какое обучение вам нужно?",
+    title: "На чём хотите обучаться?",
     options: [
-      { id: "full-course", label: "Полный курс категории B" },
-      { id: "theory", label: "Только теория" },
-      { id: "practice", label: "Практическое вождение" },
+      { id: "manual", label: "Автомобиль на механике" },
+      { id: "automatic", label: "Автомобиль на автомате" },
       { id: "undecided", label: "Пока не решил" },
     ],
   },

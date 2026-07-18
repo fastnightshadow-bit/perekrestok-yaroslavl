@@ -7,20 +7,13 @@ import {
   Navigation,
   Phone,
 } from "lucide-react";
-import { useState } from "react";
 
-import {
-  EnrollmentForm,
-  type EnrollmentFormValues,
-} from "@/components/enrollment-form";
-import { MapPlaceholder } from "@/components/map-placeholder";
+import { EnrollmentForm } from "@/components/enrollment-form";
+import { YandexMap } from "@/components/yandex-map";
 import { Button } from "@/components/ui/button";
 import { contactDetails } from "@/data/contact";
 
 export function ContactSection() {
-  const [preparedRequest, setPreparedRequest] =
-    useState<EnrollmentFormValues | null>(null);
-
   return (
     <section
       aria-labelledby="contacts-title"
@@ -145,7 +138,7 @@ export function ContactSection() {
 
           </div>
 
-          <MapPlaceholder />
+          <YandexMap />
         </div>
 
         <div className="mt-12 rounded-[1.75rem] border border-neutral-200 bg-white p-6 shadow-[0_24px_75px_rgba(18,20,22,0.065)] sm:p-8 lg:mt-16 lg:p-10">
@@ -163,22 +156,13 @@ export function ContactSection() {
 
           <div className="mt-7">
             <EnrollmentForm
+              leadType="contact"
               layout="contact"
-              onSubmitted={setPreparedRequest}
               showComment
+              source="contacts"
               submitLabel="Записаться"
             />
           </div>
-
-          {preparedRequest ? (
-            <p
-              className="mt-5 rounded-[0.875rem] bg-green-50 px-4 py-3 text-sm font-medium text-green-800"
-              role="status"
-            >
-              Данные формы сохранены на этой странице. Реальная отправка будет
-              доступна после подключения сервера.
-            </p>
-          ) : null}
         </div>
       </div>
     </section>

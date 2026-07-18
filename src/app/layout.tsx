@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
 
+import { CookieBanner } from "@/components/cookie-banner";
+import { CookieConsentProvider } from "@/components/cookie-consent-provider";
+import { CookieSettingsDialog } from "@/components/cookie-settings-dialog";
+import { YandexMetrika } from "@/components/yandex-metrika";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
@@ -66,7 +70,12 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body>
-        {children}
+        <CookieConsentProvider>
+          {children}
+          <CookieBanner />
+          <CookieSettingsDialog />
+          <YandexMetrika />
+        </CookieConsentProvider>
       </body>
     </html>
   );

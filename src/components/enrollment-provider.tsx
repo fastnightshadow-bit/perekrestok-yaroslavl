@@ -15,8 +15,8 @@ const consultationProgram = "Консультация по обучению";
 
 export type EnrollmentContextValue = {
   closeEnrollment: () => void;
-  openConsultation: () => void;
-  openEnrollment: (program: string) => void;
+  openConsultation: (source?: string) => void;
+  openEnrollment: (program: string, source?: string) => void;
 };
 
 export type EnrollmentProviderProps = {
@@ -29,15 +29,17 @@ export function EnrollmentProvider({
   children,
 }: EnrollmentProviderProps) {
   const [selectedProgram, setSelectedProgram] = useState(consultationProgram);
+  const [selectedSource, setSelectedSource] = useState("website");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openEnrollment = useCallback((program: string) => {
+  const openEnrollment = useCallback((program: string, source = "website") => {
     setSelectedProgram(program);
+    setSelectedSource(source);
     setIsModalOpen(true);
   }, []);
 
-  const openConsultation = useCallback(() => {
-    openEnrollment(consultationProgram);
+  const openConsultation = useCallback((source = "website") => {
+    openEnrollment(consultationProgram, source);
   }, [openEnrollment]);
 
   const closeEnrollment = useCallback(() => {
@@ -60,8 +62,9 @@ export function EnrollmentProvider({
         isOpen={isModalOpen}
         onClose={closeEnrollment}
         selectedProgram={selectedProgram}
+        source={selectedSource}
       />
-      <MobileActionBar onEnroll={openConsultation} />
+      <MobileActionBar onEnroll={() => openConsultation("mobile-action-bar")} />
     </EnrollmentContext.Provider>
   );
 }

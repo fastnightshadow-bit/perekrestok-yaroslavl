@@ -24,7 +24,7 @@ export function InstructorsSection({
   }, []);
 
   const enrollWithInstructor = useCallback((instructor: Instructor) => {
-    openEnrollment(`Инструктор: ${instructor.name}`);
+    openEnrollment(`Инструктор: ${instructor.name}`, "instructors");
     setSelectedInstructor(null);
   }, [openEnrollment]);
 
@@ -50,7 +50,7 @@ export function InstructorsSection({
             помогают почувствовать уверенность за рулём.
           </p>
           <p className="mt-3 text-xs font-medium uppercase tracking-[0.1em] text-neutral-600">
-            Имена и автомобили — по данным официального сайта автошколы
+            Имена, стаж и состав команды — по официальным материалам автошколы
           </p>
         </div>
 

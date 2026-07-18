@@ -15,7 +15,7 @@ function TestActions() {
 
   return (
     <>
-      <button onClick={openConsultation} type="button">
+      <button onClick={() => openConsultation()} type="button">
         Консультация
       </button>
       <button

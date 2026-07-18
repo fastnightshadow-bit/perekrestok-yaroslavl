@@ -1,6 +1,6 @@
 "use client";
 
-import { CarFront } from "lucide-react";
+import { CalendarDays, CarFront } from "lucide-react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -35,15 +35,21 @@ export function InstructorCard({
         <h3 className="text-xl font-semibold tracking-[-0.035em] text-neutral-950">
           {instructor.name}
         </h3>
-        <div className="mt-4 flex items-start gap-2 text-sm leading-6 text-neutral-600">
-          <CarFront
-            aria-hidden="true"
-            className="mt-1 shrink-0"
-            size={16}
-            strokeWidth={1.7}
-          />
-          {instructor.vehicle}
+        <div className="mt-4 flex items-center gap-2 text-sm font-medium text-neutral-700">
+          <CalendarDays aria-hidden="true" size={16} strokeWidth={1.7} />
+          С {instructor.sinceYear} года
         </div>
+        {instructor.vehicle ? (
+          <div className="mt-2 flex items-start gap-2 text-sm leading-6 text-neutral-600">
+            <CarFront
+              aria-hidden="true"
+              className="mt-1 shrink-0"
+              size={16}
+              strokeWidth={1.7}
+            />
+            {instructor.vehicle}
+          </div>
+        ) : null}
         <p className="mt-4 text-sm leading-6 text-neutral-600">
           {instructor.description}
         </p>

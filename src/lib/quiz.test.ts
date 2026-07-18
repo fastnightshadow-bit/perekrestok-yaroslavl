@@ -1,46 +1,47 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { getQuizRecommendation, isValidPhone } from "./quiz";
+import { getQuizRecommendation, isValidPhone, submitQuizLead } from "./quiz";
+
+const { submitLeadMock } = vi.hoisted(() => ({
+  submitLeadMock: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock("@/lib/leads/client", async () => {
+  const actual = await vi.importActual<typeof import("@/lib/leads/client")>(
+    "@/lib/leads/client",
+  );
+  return { ...actual, submitLead: submitLeadMock };
+});
 
 describe("getQuizRecommendation", () => {
-  it("recommends theory when the learner only needs theory", () => {
+  it("recommends manual transmission when selected", () => {
     expect(
       getQuizRecommendation({
-        goal: "theory",
+        goal: "manual",
         schedule: "morning",
         experience: "never",
-      }).slug,
-    ).toBe("theory");
+      }).name,
+    ).toBe("Категория B — МКПП");
   });
 
-  it("recommends practical training when the learner needs practice", () => {
+  it("recommends automatic transmission when selected", () => {
     expect(
       getQuizRecommendation({
-        goal: "practice",
+        goal: "automatic",
         schedule: "evening",
         experience: "little",
-      }).slug,
-    ).toBe("driving-practice");
+      }).name,
+    ).toBe("Категория B — АКПП");
   });
 
-  it("recommends the full course for a new learner", () => {
-    expect(
-      getQuizRecommendation({
-        goal: "full-course",
-        schedule: "weekends",
-        experience: "never",
-      }).slug,
-    ).toBe("category-b");
-  });
-
-  it("prioritizes additional lessons when skills need restoring", () => {
+  it("offers help when the transmission is undecided", () => {
     expect(
       getQuizRecommendation({
         goal: "undecided",
         schedule: "unknown",
         experience: "restore",
-      }).slug,
-    ).toBe("additional-lesson");
+      }).name,
+    ).toBe("Категория B");
   });
 });
 
@@ -51,5 +52,32 @@ describe("isValidPhone", () => {
 
   it("rejects a short telephone number", () => {
     expect(isValidPhone("12345")).toBe(false);
+  });
+});
+
+describe("submitQuizLead", () => {
+  it("sends the recommendation and all answers through the shared lead client", async () => {
+    await submitQuizLead({
+      answers: { goal: "manual", schedule: "evening", experience: "never" },
+      consent: true,
+      formStartedAt: 100,
+      name: "Илья",
+      phone: "+7 999 123-45-67",
+      recommendedProgram: "Категория B — МКПП",
+      website: "",
+    });
+
+    expect(submitLeadMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        interest: "Категория B — МКПП",
+        quizAnswers: {
+          goal: "manual",
+          schedule: "evening",
+          experience: "never",
+        },
+        source: "quiz",
+        type: "quiz",
+      }),
+    );
   });
 });

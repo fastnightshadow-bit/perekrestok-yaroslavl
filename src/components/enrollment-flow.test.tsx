@@ -3,11 +3,20 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
 import Home from "@/app/page";
+import { CookieConsentProvider } from "@/components/cookie-consent-provider";
+
+function renderHome() {
+  return render(
+    <CookieConsentProvider>
+      <Home />
+    </CookieConsentProvider>,
+  );
+}
 
 describe("shared enrollment flow", () => {
   it("opens consultation explicitly from the Hero trigger", async () => {
     const user = userEvent.setup();
-    render(<Home />);
+    renderHome();
 
     await user.click(
       screen.getByRole("link", { name: "Записаться на обучение" }),
@@ -18,22 +27,24 @@ describe("shared enrollment flow", () => {
     );
   });
 
-  it("opens the same modal with the selected tariff", async () => {
+  it("opens the same modal with the selected category B service", async () => {
     const user = userEvent.setup();
-    render(<Home />);
+    renderHome();
 
     const pricingSection = screen.getByRole("region", {
-      name: "Понятная стоимость без скрытых платежей",
+      name: "Обучение категории B",
     });
-    const fullCourseTariff = within(pricingSection).getByRole("article", {
-      name: "Полный курс категории B",
+    const automaticOption = within(pricingSection).getByRole("article", {
+      name: "Категория B — МКПП / АКПП",
     });
     await user.click(
-      within(fullCourseTariff).getByRole("button", { name: "Записаться" }),
+      within(automaticOption).getByRole("button", {
+        name: "Узнать стоимость и свободные места",
+      }),
     );
 
     expect(screen.getByLabelText("Выбранная программа")).toHaveValue(
-      "Полный курс категории B",
+      "Категория B — МКПП / АКПП",
     );
   });
 
@@ -44,7 +55,7 @@ describe("shared enrollment flow", () => {
     unrelatedLink.textContent = "Обычная якорная ссылка";
     document.body.append(unrelatedLink);
 
-    render(<Home />);
+    renderHome();
     await user.click(unrelatedLink);
 
     expect(

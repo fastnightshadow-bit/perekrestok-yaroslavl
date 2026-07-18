@@ -11,11 +11,13 @@ export type EnrollmentTriggerProps = Omit<
 > & {
   children: React.ReactNode;
   program?: string;
+  source?: string;
 };
 
 export function EnrollmentTrigger({
   children,
   program,
+  source = "website",
   ...buttonProps
 }: EnrollmentTriggerProps) {
   const { openConsultation, openEnrollment } = useEnrollment();
@@ -24,9 +26,9 @@ export function EnrollmentTrigger({
     event.preventDefault();
 
     if (program) {
-      openEnrollment(program);
+      openEnrollment(program, source);
     } else {
-      openConsultation();
+      openConsultation(source);
     }
   };
 

@@ -17,8 +17,8 @@ describe("FleetSection", () => {
     for (const model of [
       "Volkswagen Polo",
       "Renault Logan II",
-      "Lada Granta",
-      "Lada Largus",
+      "Lada Granta — серебристая",
+      "Lada Granta — графитовая",
     ]) {
       expect(
         within(section).getByRole("article", { name: model }),

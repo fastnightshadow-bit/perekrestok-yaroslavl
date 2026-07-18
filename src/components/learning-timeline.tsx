@@ -34,7 +34,10 @@ export function LearningTimeline() {
           </p>
         </div>
 
-        <ol className="relative mt-12 grid min-w-0 gap-9 before:absolute before:bottom-4 before:left-5 before:top-5 before:w-px before:bg-neutral-300 lg:grid-cols-7 lg:gap-5 lg:before:bottom-auto lg:before:left-[5%] lg:before:right-[5%] lg:before:top-5 lg:before:h-px lg:before:w-auto">
+        <ol
+          aria-label="Этапы обучения"
+          className="relative mt-12 grid min-w-0 gap-9 lg:grid-cols-2 lg:gap-5"
+        >
           {learningSteps.map((step, index) => (
             <TimelineStep index={index} key={step.id} step={step} />
           ))}
@@ -53,7 +56,7 @@ export function LearningTimeline() {
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <Button
               className="w-full sm:w-auto"
-              onClick={() => openEnrollment("Запись на обучение")}
+              onClick={() => openEnrollment("Запись на обучение", "learning-timeline")}
             >
               Записаться
               <ArrowUpRight aria-hidden="true" size={17} strokeWidth={1.8} />

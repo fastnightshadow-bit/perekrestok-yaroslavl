@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import { metadata } from "./layout";
-import { generateMetadata as generateProgramMetadata } from "./programs/[slug]/page";
 import { metadata as reviewsMetadata } from "./reviews/page";
 import robots from "./robots";
 import sitemap from "./sitemap";
@@ -29,11 +28,22 @@ describe("technical SEO", () => {
       rules: { allow: "/", userAgent: "*" },
       sitemap: "https://perekrestok76.ru/sitemap.xml",
     });
-    expect(sitemap()).toEqual([
-      expect.objectContaining({
-        url: "https://perekrestok76.ru",
-      }),
-    ]);
+    expect(sitemap()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: "https://perekrestok76.ru",
+        }),
+        expect.objectContaining({
+          url: "https://perekrestok76.ru/privacy/",
+        }),
+        expect.objectContaining({
+          url: "https://perekrestok76.ru/consent/",
+        }),
+        expect.objectContaining({
+          url: "https://perekrestok76.ru/cookies/",
+        }),
+      ]),
+    );
   });
 
   it("uses verified business data in structured data", () => {
@@ -48,9 +58,9 @@ describe("technical SEO", () => {
     });
     expect(jsonLd.address).toMatchObject({
       addressLocality: "Ярославль",
-      streetAddress: "ул. Республиканская, д. 3, корп. 1, оф. 405",
+      streetAddress: "ул. Республиканская, д. 3, корп. 1, оф. 405, 4 этаж",
     });
-    expect(jsonLd.priceRange).toBe("12 000–53 800 ₽");
+    expect(jsonLd.priceRange).toBe("1 300–47 600 ₽");
     expect(jsonLd.openingHoursSpecification).toEqual([
       expect.objectContaining({
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
@@ -60,17 +70,8 @@ describe("technical SEO", () => {
     ]);
   });
 
-  it("keeps unfinished internal routes out of search results", async () => {
+  it("keeps the unfinished reviews route out of search results", () => {
     expect(reviewsMetadata.robots).toMatchObject({
-      index: false,
-      follow: false,
-    });
-
-    const programMetadata = await generateProgramMetadata({
-      params: Promise.resolve({ slug: "category-b" }),
-    });
-    expect(programMetadata.title).toBe("Полный курс категории B");
-    expect(programMetadata.robots).toMatchObject({
       index: false,
       follow: false,
     });

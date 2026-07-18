@@ -1,11 +1,16 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { CookieConsentProvider } from "@/components/cookie-consent-provider";
 import Home from "./page";
 
 describe("Home", () => {
   it("uses one main landmark for the complete page experience", () => {
-    render(<Home />);
+    render(
+      <CookieConsentProvider>
+        <Home />
+      </CookieConsentProvider>,
+    );
 
     const main = screen.getByRole("main");
 

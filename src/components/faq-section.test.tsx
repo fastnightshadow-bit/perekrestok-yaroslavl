@@ -45,7 +45,7 @@ describe("FaqSection", () => {
     expect(durationQuestion).toHaveAttribute("aria-expanded", "false");
     expect(paymentQuestion).toHaveAttribute("aria-expanded", "true");
     expect(
-      screen.getByText(/разделить стоимость обучения/i),
+      screen.getByText(/первый взнос — от 1 000 ₽/i),
     ).toBeInTheDocument();
   });
 });

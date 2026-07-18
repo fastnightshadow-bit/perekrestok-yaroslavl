@@ -3,34 +3,40 @@ import type {
   QuizAnswers,
   QuizLeadPayload,
 } from "@/data/quiz";
-import { getProgramBySlug, type Program } from "@/data/programs";
+import {
+  collectLeadAttribution,
+  submitLead,
+} from "@/lib/leads/client";
 
 export { isValidPhone } from "@/lib/phone";
 
-function requireProgram(slug: string): Program {
-  const program = getProgramBySlug(slug);
+export type QuizRecommendation = {
+  name: string;
+  description: string;
+};
 
-  if (!program) {
-    throw new Error(`Program not found: ${slug}`);
+export function getQuizRecommendation(
+  answers: QuizAnswers,
+): QuizRecommendation {
+  if (answers.goal === "automatic") {
+    return {
+      name: "Категория B — АКПП",
+      description: "Комфортное обучение без переключения передач.",
+    };
   }
 
-  return program;
-}
-
-export function getQuizRecommendation(answers: QuizAnswers): Program {
-  if (answers.experience === "restore" || answers.experience === "exam") {
-    return requireProgram("additional-lesson");
+  if (answers.goal === "manual") {
+    return {
+      name: "Категория B — МКПП",
+      description: "Универсальный вариант обучения категории B.",
+    };
   }
 
-  if (answers.goal === "theory") {
-    return requireProgram("theory");
-  }
-
-  if (answers.goal === "practice") {
-    return requireProgram("driving-practice");
-  }
-
-  return requireProgram("category-b");
+  return {
+    name: "Категория B",
+    description:
+      "Администратор поможет выбрать подходящую коробку передач.",
+  };
 }
 
 export function areQuizAnswersComplete(
@@ -39,9 +45,24 @@ export function areQuizAnswersComplete(
   return Boolean(answers.goal && answers.schedule && answers.experience);
 }
 
-export async function submitQuizLead(
-  payload: QuizLeadPayload,
-): Promise<void> {
-  void payload;
-  await new Promise((resolve) => window.setTimeout(resolve, 450));
+export async function submitQuizLead(payload: QuizLeadPayload): Promise<void> {
+  const pageUrl = typeof window === "undefined" ? undefined : window.location.href;
+  const attribution =
+    typeof window === "undefined"
+      ? undefined
+      : collectLeadAttribution(new URLSearchParams(window.location.search));
+
+  await submitLead({
+    attribution,
+    consent: true,
+    formStartedAt: payload.formStartedAt,
+    interest: payload.recommendedProgram,
+    name: payload.name,
+    pageUrl,
+    phone: payload.phone,
+    quizAnswers: payload.answers,
+    source: "quiz",
+    type: "quiz",
+    website: payload.website,
+  });
 }

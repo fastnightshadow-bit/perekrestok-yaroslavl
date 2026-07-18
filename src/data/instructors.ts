@@ -5,68 +5,87 @@ export type Instructor = {
   name: string;
   image: string;
   imagePosition?: string;
-  vehicle: string;
+  sinceYear: number;
+  vehicle?: string;
   description: string;
 };
 
 const description =
   "Инструктор практического вождения автошколы «Перекрёсток».";
 
+const studioPortrait = (fileName: string) =>
+  publicPath(`/images/instructors/${fileName}-studio-20260718.jpg`);
+
 export const instructors: Instructor[] = [
   {
     id: "sergey-pogodin",
-    name: "Сергей Погодин",
-    image: publicPath("/images/instructors/sergey-pogodin.jpg"),
-    imagePosition: "50% 45%",
+    name: "Погодин Сергей Владимирович",
+    image: studioPortrait("sergey-pogodin"),
+    imagePosition: "50% 42%",
+    sinceYear: 1999,
     vehicle: "Volkswagen Polo",
     description,
   },
   {
     id: "vladimir-shestov",
-    name: "Шестов Владимир",
-    image: publicPath("/images/instructors/vladimir-shestov.jpg"),
-    imagePosition: "50% 48%",
+    name: "Шестов Владимир Владимирович",
+    image: studioPortrait("vladimir-shestov"),
+    imagePosition: "50% 42%",
+    sinceYear: 2007,
     vehicle: "Renault Logan II",
     description,
   },
   {
     id: "nikolay-maltsev",
-    name: "Николай Мальцев",
-    image: publicPath("/images/instructors/nikolay-maltsev.jpg"),
-    imagePosition: "50% 48%",
+    name: "Мальцев Николай Анатольевич",
+    image: studioPortrait("nikolay-maltsev"),
+    imagePosition: "50% 42%",
+    sinceYear: 2014,
     vehicle: "Lada Granta",
     description,
   },
   {
     id: "nikolay-lobanov",
-    name: "Николай Лобанов",
-    image: publicPath("/images/instructors/nikolay-lobanov.jpg"),
-    imagePosition: "50% 48%",
+    name: "Лобанов Николай Николаевич",
+    image: studioPortrait("nikolay-lobanov"),
+    imagePosition: "50% 42%",
+    sinceYear: 2014,
     vehicle: "Lada Granta",
     description,
   },
   {
     id: "eduard-zhuk",
-    name: "Эдуард Жук",
-    image: publicPath("/images/instructors/eduard-zhuk.jpg"),
-    imagePosition: "50% 48%",
+    name: "Жук Эдуард Алексеевич",
+    image: studioPortrait("eduard-zhuk"),
+    imagePosition: "50% 42%",
+    sinceYear: 2007,
     vehicle: "Lada Granta",
     description,
   },
   {
     id: "valentin-krivenko",
-    name: "Валентин Кривенко",
-    image: publicPath("/images/instructors/valentin-krivenko.jpg"),
-    imagePosition: "50% 50%",
+    name: "Кривенко Валентин Николаевич",
+    image: studioPortrait("valentin-krivenko"),
+    imagePosition: "50% 42%",
+    sinceYear: 2014,
     vehicle: "Lada Granta",
     description,
   },
   {
     id: "igor-prokhorov",
-    name: "Игорь Прохоров",
-    image: publicPath("/images/instructors/igor-prokhorov.jpg"),
-    imagePosition: "50% 45%",
+    name: "Прохоров Игорь Юрьевич",
+    image: studioPortrait("igor-prokhorov"),
+    imagePosition: "50% 42%",
+    sinceYear: 2002,
     vehicle: "Lada Largus",
+    description,
+  },
+  {
+    id: "alexey-zaytsev",
+    name: "Зайцев Алексей Валерьевич",
+    image: studioPortrait("alexey-zaytsev"),
+    imagePosition: "50% 50%",
+    sinceYear: 2009,
     description,
   },
 ];

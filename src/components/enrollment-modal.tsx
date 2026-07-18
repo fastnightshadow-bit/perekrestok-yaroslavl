@@ -14,6 +14,7 @@ import { EnrollmentForm } from "@/components/enrollment-form";
 type EnrollmentModalProps = {
   isOpen: boolean;
   selectedProgram: string;
+  source?: string;
   onClose: () => void;
 };
 
@@ -23,6 +24,7 @@ const focusableSelector =
 export function EnrollmentModal({
   isOpen,
   selectedProgram,
+  source = "website",
   onClose,
 }: EnrollmentModalProps) {
   const titleId = useId();
@@ -134,6 +136,7 @@ export function EnrollmentModal({
                 nameInputRef={nameInputRef}
                 selectedProgram={selectedProgram}
                 showProgram
+                source={source}
               />
             </div>
           </div>

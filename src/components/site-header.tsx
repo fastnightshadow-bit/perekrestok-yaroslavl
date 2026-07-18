@@ -99,7 +99,7 @@ export function SiteHeader() {
   const handleEnrollmentClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setIsMenuOpen(false);
-    openConsultation();
+    openConsultation("header");
   };
 
   return (

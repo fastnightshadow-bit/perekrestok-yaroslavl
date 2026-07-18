@@ -113,7 +113,7 @@ export function ProgramQuiz({
                     setDirection(-1);
                     setCurrentStep(quizQuestions.length - 1);
                   }}
-                  program={recommendation}
+                  recommendation={recommendation}
                   submitLead={submitLeadOverride}
                 />
               ) : question ? (

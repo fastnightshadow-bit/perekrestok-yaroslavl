@@ -1,7 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, BadgeCheck } from "lucide-react";
-import Link from "next/link";
+import { ArrowLeft, ArrowRight, Star } from "lucide-react";
 import { useRef } from "react";
 
 import { EmptyState } from "@/components/empty-state";
@@ -9,6 +8,7 @@ import { ReviewCard } from "@/components/review-card";
 import { Button } from "@/components/ui/button";
 import { studentReviews, type StudentReview } from "@/data/reviews";
 import { schoolFacts } from "@/data/school-facts";
+import { siteConfig } from "@/config/site";
 
 type ReviewsSectionProps = {
   items?: readonly StudentReview[];
@@ -59,18 +59,19 @@ export function ReviewsSection({
           {items.length > 0 ? (
             <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.055] p-6">
               <div className="flex items-center gap-2 text-yellow-400">
-                <BadgeCheck aria-hidden="true" size={22} strokeWidth={1.8} />
+                <Star aria-hidden="true" fill="currentColor" size={22} strokeWidth={1.8} />
                 <span className="text-xs font-bold uppercase tracking-[0.14em]">
-                  Результат учеников
+                  Рейтинг на Яндекс Картах
                 </span>
               </div>
               <div className="mt-4 flex items-end gap-3">
                 <strong className="text-5xl font-semibold tracking-[-0.06em]">
-                  {schoolFacts.firstTryPassRate}
+                  {schoolFacts.yandexRating}
                 </strong>
+                <span className="pb-1 text-sm text-white/55">из 5</span>
               </div>
               <p className="mt-3 text-sm text-white/50">
-                учеников сдают на права с первого раза
+                {schoolFacts.yandexRatingCount} оценок учеников
               </p>
             </div>
           ) : null}
@@ -130,10 +131,16 @@ export function ReviewsSection({
               className="border-white/20 bg-white/5 text-white hover:border-white/45 hover:bg-white/10"
               variant="outline"
             >
-              <Link href="/reviews">Смотреть все отзывы</Link>
+              <a
+                href={siteConfig.social.yandexReviews}
+                rel="noreferrer"
+                target="_blank"
+              >
+                Смотреть все отзывы
+              </a>
             </Button>
             <p className="mt-4 text-xs font-medium uppercase tracking-[0.1em] text-white/55">
-              Отзывы опубликованы на официальном сайте автошколы
+              Актуальный рейтинг и отзывы — на Яндекс Картах
             </p>
           </div>
         </>

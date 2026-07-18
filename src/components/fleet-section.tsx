@@ -48,7 +48,7 @@ export function FleetSection({ items = trainingCars }: FleetSectionProps) {
               <CarCard
                 car={car}
                 key={car.id}
-                onEnroll={openEnrollment}
+                onEnroll={(program) => openEnrollment(program, "fleet")}
               />
             ))}
           </div>
@@ -70,7 +70,7 @@ export function FleetSection({ items = trainingCars }: FleetSectionProps) {
             </p>
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
-            <Button onClick={() => openEnrollment("Консультация по обучению")}>
+            <Button onClick={() => openEnrollment("Консультация по обучению", "fleet")}>
               Получить консультацию
             </Button>
             <Button

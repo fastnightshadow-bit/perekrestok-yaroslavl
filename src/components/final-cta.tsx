@@ -43,7 +43,7 @@ export function FinalCta() {
           <Button
             className="w-full sm:w-auto lg:min-w-52"
             onClick={() =>
-              openEnrollment("Заявка с финального экрана")
+              openEnrollment("Заявка с финального экрана", "final-cta")
             }
             size="lg"
           >

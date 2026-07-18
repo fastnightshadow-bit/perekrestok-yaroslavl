@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 
+import { CookieSettingsButton } from "@/components/cookie-settings-button";
 import { siteConfig } from "@/config/site";
 import { contactDetails } from "@/data/contact";
 
@@ -116,6 +117,17 @@ export function SiteFooter() {
                   <ArrowUpRight aria-hidden="true" size={13} />
                 </a>
               </li>
+              <li>
+                <a
+                  className={`${linkClassName} inline-flex items-center gap-1.5`}
+                  href={siteConfig.social.yandexMaps}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Яндекс Карты
+                  <ArrowUpRight aria-hidden="true" size={13} />
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -131,8 +143,31 @@ export function SiteFooter() {
                   rel="noreferrer"
                   target="_blank"
                 >
-                  Политика конфиденциальности
+                  Политика обработки персональных данных
                 </a>
+              </li>
+              <li>
+                <a
+                  className={linkClassName}
+                  href={siteConfig.legal.consent}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Согласие на обработку персональных данных
+                </a>
+              </li>
+              <li>
+                <a
+                  className={linkClassName}
+                  href={siteConfig.legal.cookies}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Политика cookie
+                </a>
+              </li>
+              <li>
+                <CookieSettingsButton className={`${linkClassName} text-left`} />
               </li>
               <li className="text-sm leading-6 text-white/55">
                 Лицензия

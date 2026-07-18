@@ -1,13 +1,13 @@
 # Источники фотографий инструкторов
 
-Получено 17 июля 2026 года с официального сайта автошколы «Перекрёсток» для закрытого демонстрационного прототипа.
+Получены от пользователя 18 июля 2026 года как подготовленные фотографии автошколы «Перекрёсток».
 
-- `sergey-pogodin.jpg` — https://perekrestok76.ru/images/instruktory/avtoshkola_instruktor_1.jpg
-- `vladimir-shestov.jpg` — https://perekrestok76.ru/images/instruktory/avtoshkola_instruktor_2.jpg
-- `nikolay-maltsev.jpg` — https://perekrestok76.ru/images/instruktory/avtoshkola_instruktor_3.jpg
-- `nikolay-lobanov.jpg` — https://perekrestok76.ru/images/instruktory/avtoshkola_instruktor_4.jpg
-- `eduard-zhuk.jpg` — https://perekrestok76.ru/images/instruktory/avtoshkola_instruktor_5.jpg
-- `valentin-krivenko.jpg` — https://perekrestok76.ru/images/instruktory/avtoshkola_instruktor_6.jpg
-- `igor-prokhorov.jpg` — https://perekrestok76.ru/images/instruktory/avtoshkola_instruktor_7.jpg
+- `sergey-pogodin.jpg` — `photo_4_2026-07-18_11-09-00.jpg`
+- `vladimir-shestov.jpg` — `photo_5_2026-07-18_11-09-00.jpg`
+- `nikolay-maltsev.jpg` — `photo_6_2026-07-18_11-09-00.jpg`
+- `nikolay-lobanov.jpg` — `photo_3_2026-07-18_11-09-00.jpg`
+- `eduard-zhuk.jpg` — `photo_7_2026-07-18_11-09-00.jpg`
+- `valentin-krivenko.jpg` — `photo_2_2026-07-18_11-09-00.jpg`
+- `igor-prokhorov.jpg` — `photo_1_2026-07-18_11-08-59.jpg`
 
 Перед публичным запуском автошкола должна подтвердить право на использование фотографий.

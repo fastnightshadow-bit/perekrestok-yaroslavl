@@ -6,26 +6,40 @@ import { renderWithEnrollment } from "@/test/render-with-enrollment";
 import { LearningTimeline } from "./learning-timeline";
 
 describe("LearningTimeline", () => {
-  it("shows the complete seven-stage path", () => {
-    renderWithEnrollment(<LearningTimeline />);
-
-    expect(
-      screen.getByRole("heading", { name: "Как проходит обучение" }),
-    ).toBeInTheDocument();
+  it("shows the detailed seven-stage path and medical specialists", () => {
+    const { container } = renderWithEnrollment(<LearningTimeline />);
 
     const stages = [
-      "Оставляете заявку",
-      "Консультация",
-      "Заключение договора",
-      "Изучение теории",
-      "Практические занятия",
-      "Экзамен",
-      "Получение водительского удостоверения",
+      "Подайте заявку на обучение",
+      "Пройдите медкомиссию",
+      "Изучайте теорию очно или онлайн",
+      "Учитесь водить с инструктором",
+      "Пройдите внутренний экзамен",
+      "Сдайте экзамен в ГАИ",
+      "Получите водительское удостоверение",
     ];
 
     for (const stage of stages) {
       expect(screen.getByRole("heading", { name: stage })).toBeInTheDocument();
     }
+
+    for (const doctor of [
+      "Психиатр",
+      "Психиатр-нарколог",
+      "Офтальмолог",
+      "Терапевт",
+    ]) {
+      expect(screen.getByText(doctor)).toBeInTheDocument();
+    }
+
+    expect(screen.getByRole("list", { name: "Этапы обучения" })).toHaveClass(
+      "lg:grid-cols-2",
+    );
+
+    const timelineSteps = container.querySelectorAll("ol > li");
+    expect(timelineSteps).toHaveLength(7);
+    expect(timelineSteps[0]).toHaveClass("before:-bottom-9");
+    expect(timelineSteps[6]).toHaveClass("last:before:hidden");
   });
 
   it("connects the CTA to enrollment and telephone actions", async () => {

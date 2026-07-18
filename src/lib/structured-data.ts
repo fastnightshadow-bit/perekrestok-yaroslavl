@@ -30,6 +30,6 @@ export function getDrivingSchoolJsonLd() {
       },
     ],
     sameAs: [siteConfig.social.vk, siteConfig.social.yandexMaps],
-    priceRange: "12 000–53 800 ₽",
+    priceRange: "1 300–47 600 ₽",
   };
 }

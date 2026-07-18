@@ -13,7 +13,7 @@ describe("Hero", () => {
         name: "Спокойно научим уверенно водить",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("53 800 ₽")).toBeInTheDocument();
+    expect(screen.getByText("47 600 ₽")).toBeInTheDocument();
     expect(
       screen.getByText(/Более 85% учеников сдают с первого раза/i),
     ).toBeInTheDocument();
@@ -41,6 +41,7 @@ describe("Hero", () => {
       "src",
       expect.stringContaining("perekrestok-hero.jpg"),
     );
-    expect(image).toHaveClass("object-[52%_center]", "lg:object-center");
+    expect(image).toHaveClass("object-[66%_center]", "lg:object-center");
+    expect(image.parentElement).toHaveClass("col-span-5", "lg:col-span-7");
   });
 });
