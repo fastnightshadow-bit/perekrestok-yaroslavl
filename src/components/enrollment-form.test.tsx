@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
+import { LeadSubmissionError } from "@/lib/leads/client";
 import { EnrollmentForm } from "./enrollment-form";
 
 describe("EnrollmentForm", () => {
@@ -79,7 +80,9 @@ describe("EnrollmentForm", () => {
 
   it("keeps entered data and offers a phone fallback after a delivery error", async () => {
     const user = userEvent.setup();
-    const submitLeadOverride = vi.fn().mockRejectedValue(new Error("offline"));
+    const submitLeadOverride = vi
+      .fn()
+      .mockRejectedValue(new LeadSubmissionError("Сервис временно недоступен"));
     render(<EnrollmentForm submitLeadOverride={submitLeadOverride} />);
 
     await user.type(screen.getByLabelText("Имя"), "Илья");
@@ -88,7 +91,7 @@ describe("EnrollmentForm", () => {
     await user.click(screen.getByRole("button", { name: "Отправить заявку" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Не удалось отправить заявку",
+      "Сервис временно недоступен",
     );
     expect(screen.getByLabelText("Имя")).toHaveValue("Илья");
     expect(screen.getByLabelText("Телефон")).toHaveValue(

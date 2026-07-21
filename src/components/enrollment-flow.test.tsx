@@ -19,7 +19,7 @@ describe("shared enrollment flow", () => {
     renderHome();
 
     await user.click(
-      screen.getByRole("link", { name: "Записаться на обучение" }),
+      screen.getByRole("link", { name: "Получить консультацию" }),
     );
 
     expect(screen.getByLabelText("Выбранная программа")).toHaveValue(

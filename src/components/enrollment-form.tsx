@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { contactDetails } from "@/data/contact";
 import {
   collectLeadAttribution,
+  LeadSubmissionError,
   submitLead,
 } from "@/lib/leads/client";
 import type { LeadInput, LeadType } from "@/lib/leads/types";
@@ -59,6 +60,7 @@ export function EnrollmentForm({
   const [phoneError, setPhoneError] = useState("");
   const [consent, setConsent] = useState(false);
   const [consentError, setConsentError] = useState("");
+  const [submissionError, setSubmissionError] = useState("");
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
@@ -88,6 +90,7 @@ export function EnrollmentForm({
     }
 
     setConsentError("");
+    setSubmissionError("");
     setStatus("submitting");
 
     const values: EnrollmentFormValues = {
@@ -120,7 +123,12 @@ export function EnrollmentForm({
       });
       onSubmitted?.(values);
       setStatus("success");
-    } catch {
+    } catch (error) {
+      setSubmissionError(
+        error instanceof LeadSubmissionError
+          ? error.message
+          : "Не удалось отправить заявку. Попробуйте ещё раз",
+      );
       setStatus("error");
     }
   };
@@ -172,7 +180,10 @@ export function EnrollmentForm({
           name="phone"
           onChange={() => {
             if (phoneError) setPhoneError("");
-            if (status === "error") setStatus("idle");
+            if (status === "error") {
+              setStatus("idle");
+              setSubmissionError("");
+            }
           }}
           placeholder="+7 (___) ___-__-__"
           required
@@ -267,7 +278,7 @@ export function EnrollmentForm({
           )}
           role="alert"
         >
-          Не удалось отправить заявку. Попробуйте ещё раз или{" "}
+          {submissionError} Можно попробовать ещё раз или{" "}
           <a className="underline underline-offset-2" href={contactDetails.phoneHref}>
             позвонить {contactDetails.phoneDisplay}
           </a>

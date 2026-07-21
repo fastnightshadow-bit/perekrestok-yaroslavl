@@ -29,7 +29,7 @@ export function EnrollmentModal({
 }: EnrollmentModalProps) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
-  const nameInputRef = useRef<HTMLInputElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!isOpen) {
@@ -39,7 +39,7 @@ export function EnrollmentModal({
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    nameInputRef.current?.focus();
+    closeButtonRef.current?.focus();
 
     const handleDocumentKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -97,13 +97,14 @@ export function EnrollmentModal({
         <div
           aria-labelledby={titleId}
           aria-modal="true"
-          className="modal-backdrop-enter fixed inset-0 z-[70] flex items-end justify-center overflow-y-auto bg-neutral-950/55 p-3 backdrop-blur-sm sm:items-center sm:p-6"
+          className="modal-backdrop-enter fixed inset-0 z-[70] flex items-end justify-center overflow-hidden bg-neutral-950/55 p-3 backdrop-blur-sm sm:items-center sm:p-6"
           data-testid="enrollment-modal-backdrop"
           onMouseDown={handleBackdropMouseDown}
           role="dialog"
         >
           <div
-            className="modal-panel-enter relative w-full max-w-lg rounded-[1.625rem] bg-[#fafaf7] p-6 shadow-[0_30px_100px_rgba(0,0,0,0.25)] sm:p-8"
+            className="modal-panel-enter relative flex max-h-[calc(100dvh-1.5rem)] w-full max-w-lg flex-col overflow-hidden rounded-[1.625rem] bg-[#fafaf7] shadow-[0_30px_100px_rgba(0,0,0,0.25)] sm:max-h-[calc(100dvh-3rem)]"
+            data-testid="enrollment-modal-panel"
             onKeyDown={handleDialogKeyDown}
             onMouseDown={(event) => event.stopPropagation()}
             ref={dialogRef}
@@ -112,28 +113,33 @@ export function EnrollmentModal({
               aria-label="Закрыть форму"
               className="absolute right-4 top-4 grid size-10 place-items-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-950/[0.06] hover:text-neutral-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
               onClick={onClose}
+              ref={closeButtonRef}
               type="button"
             >
               <X aria-hidden="true" size={20} strokeWidth={1.8} />
             </button>
 
-            <p className="pr-12 text-xs font-bold uppercase tracking-[0.16em] text-neutral-500">
-              Автошкола «Перекрёсток»
-            </p>
-            <h2
-              className="mt-4 pr-10 text-3xl font-semibold tracking-[-0.045em] text-neutral-950 sm:text-4xl"
-              id={titleId}
-            >
-              Заявка на обучение
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-neutral-600 sm:text-base">
-              Оставьте контакты — администратор уточнит детали и ответит на
-              вопросы.
-            </p>
+            <div className="shrink-0 px-6 pb-5 pt-6 sm:px-8 sm:pt-8">
+              <p className="pr-12 text-xs font-bold uppercase tracking-[0.16em] text-neutral-500">
+                Автошкола «Перекрёсток»
+              </p>
+              <h2
+                className="mt-4 pr-10 text-3xl font-semibold tracking-[-0.045em] text-neutral-950 sm:text-4xl"
+                id={titleId}
+              >
+                Заявка на обучение
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-neutral-600 sm:text-base">
+                Оставьте контакты — администратор уточнит детали и ответит на
+                вопросы.
+              </p>
+            </div>
 
-            <div className="mt-7">
+            <div
+              className="overflow-y-auto overscroll-contain border-t border-neutral-200 px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5 sm:px-8 sm:pb-8 sm:pt-6"
+              data-testid="enrollment-modal-body"
+            >
               <EnrollmentForm
-                nameInputRef={nameInputRef}
                 selectedProgram={selectedProgram}
                 showProgram
                 source={source}

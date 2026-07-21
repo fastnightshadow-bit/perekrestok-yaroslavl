@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { renderWithEnrollment } from "@/test/render-with-enrollment";
@@ -21,16 +21,17 @@ describe("Hero", () => {
 
   it("provides primary and secondary conversion actions", () => {
     renderWithEnrollment(<Hero />);
+    const content = within(screen.getByTestId("hero-content"));
 
     expect(
-      screen.getByRole("link", { name: "Записаться на обучение" }),
+      content.getByRole("link", { name: "Получить консультацию" }),
     ).toHaveAttribute("href", "#enroll");
     expect(
-      screen.getByRole("link", { name: "Подобрать программу" }),
-    ).toHaveAttribute("href", "#programs");
+      content.getByRole("link", { name: "Позвонить" }),
+    ).toHaveAttribute("href", "tel:+74852700303");
   });
 
-  it("uses the supplied school photograph with a dedicated mobile crop", () => {
+  it("uses an image-first mobile composition and restores the desktop grid", () => {
     renderWithEnrollment(<Hero />);
 
     const image = screen.getByRole("img", {
@@ -41,7 +42,22 @@ describe("Hero", () => {
       "src",
       expect.stringContaining("perekrestok-hero.jpg"),
     );
-    expect(image).toHaveClass("object-[66%_center]", "lg:object-center");
-    expect(image.parentElement).toHaveClass("col-span-5", "lg:col-span-7");
+    expect(screen.getByTestId("hero-layout")).toHaveClass(
+      "flex",
+      "lg:grid",
+      "lg:grid-cols-12",
+    );
+    expect(screen.getByTestId("hero-media")).toHaveClass(
+      "order-1",
+      "w-full",
+      "lg:order-2",
+      "lg:col-span-7",
+    );
+    expect(screen.getByTestId("hero-content")).toHaveClass(
+      "order-2",
+      "lg:order-1",
+      "lg:col-span-5",
+    );
+    expect(image).toHaveClass("object-center");
   });
 });

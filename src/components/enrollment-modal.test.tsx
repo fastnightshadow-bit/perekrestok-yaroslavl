@@ -16,7 +16,7 @@ vi.mock("@/lib/leads/client", async () => {
 });
 
 describe("EnrollmentModal", () => {
-  it("shows the selected program, labels fields, focuses the name and locks scrolling", async () => {
+  it("keeps the close control visible, focuses it and locks page scrolling", async () => {
     const onClose = vi.fn();
 
     render(
@@ -36,8 +36,20 @@ describe("EnrollmentModal", () => {
     );
     expect(screen.getByLabelText("Телефон")).toHaveAttribute("type", "tel");
 
-    await waitFor(() => expect(screen.getByLabelText("Имя")).toHaveFocus());
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "Закрыть форму" })).toHaveFocus(),
+    );
     expect(document.body.style.overflow).toBe("hidden");
+    expect(screen.getByTestId("enrollment-modal-backdrop")).toHaveClass(
+      "overflow-hidden",
+    );
+    expect(screen.getByTestId("enrollment-modal-panel")).toHaveClass(
+      "max-h-[calc(100dvh-1.5rem)]",
+      "overflow-hidden",
+    );
+    expect(screen.getByTestId("enrollment-modal-body")).toHaveClass(
+      "overflow-y-auto",
+    );
   });
 
   it("passes the opening section to the lead", async () => {
