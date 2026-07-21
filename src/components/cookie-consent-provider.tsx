@@ -12,7 +12,7 @@ import {
 
 export type CookieConsent = "accepted" | "necessary" | null;
 
-export const COOKIE_CONSENT_KEY = "perekrestok-cookie-consent-v1";
+export const COOKIE_CONSENT_KEY = "perekrestok-cookie-consent-v2";
 
 type CookieConsentContextValue = {
   consent: CookieConsent;

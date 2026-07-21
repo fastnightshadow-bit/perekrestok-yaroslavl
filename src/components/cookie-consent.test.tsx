@@ -34,6 +34,18 @@ describe("cookie consent", () => {
     delete process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID;
   });
 
+  it("asks for consent again after the cookie notice is updated", async () => {
+    process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID = "12345678";
+    localStorage.setItem("perekrestok-cookie-consent-v1", "accepted");
+
+    renderConsent();
+
+    expect(
+      await screen.findByRole("complementary", { name: "Настройки cookie" }),
+    ).toBeInTheDocument();
+    expect(document.querySelector("#yandex-metrika-script")).toBeNull();
+  });
+
   it("shows a compact non-blocking choice and saves necessary-only", async () => {
     const user = userEvent.setup();
     renderConsent();
