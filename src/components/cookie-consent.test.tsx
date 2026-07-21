@@ -36,7 +36,7 @@ describe("cookie consent", () => {
 
   it("asks for consent again after the cookie notice is updated", async () => {
     process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID = "12345678";
-    localStorage.setItem("perekrestok-cookie-consent-v1", "accepted");
+    localStorage.setItem("perekrestok-cookie-consent-v2", "accepted");
 
     renderConsent();
 
