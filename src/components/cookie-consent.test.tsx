@@ -73,8 +73,30 @@ describe("cookie consent", () => {
     await waitFor(() => {
       expect(
         document.querySelector("#yandex-metrika-script"),
-      ).toHaveAttribute("src", "https://mc.yandex.ru/metrika/tag.js");
+      ).toHaveAttribute(
+        "src",
+        "https://mc.yandex.ru/metrika/tag.js?id=12345678",
+      );
     });
+
+    const ym = (window as Window & {
+      ym?: { a?: unknown[][] };
+    }).ym;
+
+    expect(ym?.a).toContainEqual([
+      12345678,
+      "init",
+      {
+        accurateTrackBounce: true,
+        clickmap: true,
+        ecommerce: "dataLayer",
+        referrer: document.referrer,
+        ssr: true,
+        trackLinks: true,
+        url: window.location.href,
+        webvisor: true,
+      },
+    ]);
   });
 
   it("does not load Metrika without consent", async () => {

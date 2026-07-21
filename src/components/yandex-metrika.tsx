@@ -41,15 +41,19 @@ export function YandexMetrika() {
       const script = document.createElement("script");
       script.async = true;
       script.id = "yandex-metrika-script";
-      script.src = "https://mc.yandex.ru/metrika/tag.js";
+      script.src = `https://mc.yandex.ru/metrika/tag.js?id=${encodeURIComponent(counterId)}`;
       document.head.append(script);
     }
 
     windowWithYm.ym?.(numericCounterId, "init", {
       accurateTrackBounce: true,
       clickmap: true,
+      ecommerce: "dataLayer",
+      referrer: document.referrer,
+      ssr: true,
       trackLinks: true,
-      webvisor: false,
+      url: window.location.href,
+      webvisor: true,
     });
   }, [consent, counterId, hydrated]);
 
