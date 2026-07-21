@@ -15,6 +15,7 @@
 # test and coverage
 /coverage
 /work/
+/.worktrees/
 
 # misc
 .DS_Store
