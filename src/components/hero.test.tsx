@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
@@ -109,5 +112,13 @@ describe("Hero", () => {
         "content-start",
       );
     }
+  });
+
+  it("keeps animated hero layers static on mobile viewports", () => {
+    const css = readFileSync(resolve(process.cwd(), "src/app/globals.css"), "utf8");
+
+    expect(css).toMatch(
+      /@media \(max-width: 1023px\) \{[\s\S]*?#hero \.hero-enter,[\s\S]*?#hero \.hero-media-enter \{[\s\S]*?animation: none;[\s\S]*?transform: none;[\s\S]*?\}/,
+    );
   });
 });
