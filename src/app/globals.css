@@ -141,6 +141,14 @@ button {
     backwards;
 }
 
+@media (max-width: 1023px) {
+  #hero .hero-enter,
+  #hero .hero-media-enter {
+    animation: none;
+    transform: none;
+  }
+}
+
 .skeleton-pulse {
   animation: skeleton-pulse 1.6s ease-in-out infinite;
 }
