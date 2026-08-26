@@ -8,5 +8,6 @@ describe("Next.js production configuration", () => {
     expect(nextConfig.basePath).toBeUndefined();
     expect(nextConfig.assetPrefix).toBeUndefined();
     expect(nextConfig.images?.unoptimized).not.toBe(true);
+    expect(nextConfig.images?.qualities ?? []).toContain(92);
   });
 });

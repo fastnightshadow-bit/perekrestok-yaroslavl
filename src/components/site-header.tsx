@@ -118,11 +118,11 @@ export function SiteHeader() {
             className="group flex items-center gap-3 outline-none focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-yellow-400"
             href="#hero"
           >
-            <span className="relative text-[1.05rem] font-extrabold tracking-[-0.055em] text-neutral-950 sm:text-xl">
+            <span className="relative text-[1.05rem] font-black tracking-[-0.045em] text-black opacity-100 [text-shadow:0_1px_0_rgba(255,255,255,0.45)] sm:text-xl">
               ПЕРЕКРЁСТОК
               <span
                 aria-hidden="true"
-                className="absolute -top-1 left-[6.9rem] size-1.5 rounded-full bg-yellow-400 transition-transform group-hover:-translate-y-0.5 sm:left-[8.25rem]"
+                className="absolute -right-2 -top-1 size-1.5 rounded-full bg-yellow-400 transition-transform group-hover:-translate-y-0.5"
               />
             </span>
             <span className="hidden border-l border-neutral-300 pl-3 text-[0.625rem] font-semibold uppercase leading-[1.25] tracking-[0.13em] text-neutral-500 sm:block">

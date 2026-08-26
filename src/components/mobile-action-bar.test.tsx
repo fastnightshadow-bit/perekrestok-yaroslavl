@@ -24,7 +24,7 @@ describe("MobileActionBar", () => {
     vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
   });
 
-  it("stays out of the way on the Hero and appears after it", () => {
+  it("stays hidden over the full-screen Hero and appears after it", () => {
     render(
       <>
         <section id="hero" />

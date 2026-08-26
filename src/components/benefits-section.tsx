@@ -14,12 +14,12 @@ export function BenefitsSection() {
             Всё важное для спокойного старта
           </p>
           <h2
-            className="mt-5 text-[clamp(2.35rem,4.2vw,4rem)] font-semibold leading-[1.02] tracking-[-0.055em] text-neutral-950"
+            className="mt-5 text-left text-[clamp(2.35rem,4.2vw,4rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-neutral-950 text-balance"
             id="benefits-title"
           >
             Почему выбирают Перекрёсток
           </h2>
-          <p className="mt-5 max-w-xl text-base leading-7 text-neutral-600 sm:text-lg sm:leading-8">
+          <p className="mt-5 max-w-xl text-left text-base leading-7 text-neutral-600 text-pretty sm:text-lg sm:leading-8">
             Понятные условия и поддержка, чтобы сосредоточиться на главном —
             уверенном вождении.
           </p>

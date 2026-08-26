@@ -12,9 +12,13 @@ describe("SiteHeader", () => {
   it("exposes the school identity, telephone and primary action", () => {
     renderWithEnrollment(<SiteHeader />);
 
-    expect(
-      screen.getByRole("link", { name: /перекрёсток/i }),
-    ).toBeInTheDocument();
+    const homeLink = screen.getByRole("link", { name: /перекрёсток/i });
+    expect(homeLink).toBeInTheDocument();
+    expect(within(homeLink).getByText("ПЕРЕКРЁСТОК")).toHaveClass(
+      "font-black",
+      "text-black",
+      "opacity-100",
+    );
     expect(
       screen.getByRole("link", { name: /\+7 \(4852\) 70-03-03/i }),
     ).toHaveAttribute("href", "tel:+74852700303");

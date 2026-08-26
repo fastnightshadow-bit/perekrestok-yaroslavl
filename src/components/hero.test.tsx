@@ -10,9 +10,12 @@ describe("Hero", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Спокойно научим уверенно водить",
+        name: "Автошкола Перекрёсток — обучение вождению категории B в Ярославле",
       }),
     ).toBeInTheDocument();
+    expect(screen.getByText("Спокойно научим уверенно водить")).toBeInTheDocument();
+    expect(screen.getByText("Научим уверенно водить")).toBeInTheDocument();
+    expect(screen.getByText("в Ярославле")).toBeInTheDocument();
     expect(screen.getByText("47 600 ₽")).toBeInTheDocument();
     expect(
       screen.getByText(/Более 85% учеников сдают с первого раза/i),
@@ -29,9 +32,12 @@ describe("Hero", () => {
     expect(
       content.getByRole("link", { name: "Позвонить" }),
     ).toHaveAttribute("href", "tel:+74852700303");
+    expect(
+      content.getByRole("link", { name: "Записаться на обучение" }),
+    ).toHaveAttribute("href", "#enroll");
   });
 
-  it("uses an image-first mobile composition and restores the desktop grid", () => {
+  it("uses the original photo as a full-bleed mobile screen and restores the desktop grid", () => {
     renderWithEnrollment(<Hero />);
 
     const image = screen.getByRole("img", {
@@ -42,22 +48,66 @@ describe("Hero", () => {
       "src",
       expect.stringContaining("perekrestok-hero.jpg"),
     );
+    expect(
+      screen.getByRole("region", {
+        name: "Автошкола Перекрёсток — обучение вождению категории B в Ярославле",
+      }),
+    ).toHaveClass("min-h-[100svh]", "pt-0", "lg:pt-28");
     expect(screen.getByTestId("hero-layout")).toHaveClass(
-      "flex",
+      "relative",
+      "px-0",
       "lg:grid",
       "lg:grid-cols-12",
     );
     expect(screen.getByTestId("hero-media")).toHaveClass(
-      "order-1",
+      "h-[100svh]",
+      "rounded-none",
       "w-full",
       "lg:order-2",
       "lg:col-span-7",
     );
     expect(screen.getByTestId("hero-content")).toHaveClass(
-      "order-2",
+      "absolute",
+      "text-white",
+      "lg:relative",
       "lg:order-1",
       "lg:col-span-5",
     );
-    expect(image).toHaveClass("object-center");
+    expect(screen.getByText("Гибкий график")).toBeInTheDocument();
+    expect(screen.getByText("В центре города")).toBeInTheDocument();
+    expect(screen.getByText("Рассрочка на обучение")).toBeInTheDocument();
+  });
+
+  it("keeps the mobile photo crisp and fades it into the dark content area", () => {
+    renderWithEnrollment(<Hero />);
+
+    const image = screen.getByRole("img", {
+      name: "Инструктор автошколы разговаривает с ученицей в учебном автомобиле",
+    });
+    const mobileImage = screen.getByTestId("hero-mobile-image");
+    const mobileFade = screen.getByTestId("hero-mobile-fade");
+
+    expect(image.getAttribute("src")).toContain("q=92");
+    expect(mobileImage).toHaveClass(
+      "h-[86svh]",
+      "[mask-image:linear-gradient(to_bottom,black_0%,black_62%,transparent_100%)]",
+    );
+    expect(mobileFade).toHaveClass("from-white/70", "via-transparent");
+  });
+
+  it("aligns all three mobile advantages to the same two-row grid", () => {
+    renderWithEnrollment(<Hero />);
+
+    const advantages = within(screen.getByTestId("mobile-advantages"));
+    const items = advantages.getAllByRole("listitem");
+
+    expect(items).toHaveLength(3);
+    for (const item of items) {
+      expect(item).toHaveClass(
+        "grid",
+        "grid-rows-[1.5rem_2.5rem]",
+        "content-start",
+      );
+    }
   });
 });

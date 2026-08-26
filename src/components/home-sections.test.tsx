@@ -10,9 +10,14 @@ describe("BenefitsSection", () => {
   it("shows the four trust-building advantages", () => {
     render(<BenefitsSection />);
 
-    expect(
-      screen.getByRole("heading", { name: "Почему выбирают Перекрёсток" }),
-    ).toBeInTheDocument();
+    const heading = screen.getByRole("heading", {
+      name: "Почему выбирают Перекрёсток",
+    });
+    expect(heading).toHaveClass("text-left", "text-balance");
+    expect(screen.getByText(/Понятные условия и поддержка/)).toHaveClass(
+      "text-left",
+      "text-pretty",
+    );
     expect(
       screen.getByRole("heading", { name: "Обучение в центре Ярославля" }),
     ).toBeInTheDocument();
