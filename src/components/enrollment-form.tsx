@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, CheckCircle2, Clock3, Phone } from "lucide-react";
 import {
   type FormEvent,
   type RefObject,
@@ -61,6 +62,8 @@ export function EnrollmentForm({
   const [consent, setConsent] = useState(false);
   const [consentError, setConsentError] = useState("");
   const [submissionError, setSubmissionError] = useState("");
+  const [submittedValues, setSubmittedValues] =
+    useState<EnrollmentFormValues | null>(null);
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
@@ -121,6 +124,7 @@ export function EnrollmentForm({
         type: leadType,
         website: String(formData.get("website") ?? ""),
       });
+      setSubmittedValues(values);
       onSubmitted?.(values);
       setStatus("success");
     } catch (error) {
@@ -138,13 +142,71 @@ export function EnrollmentForm({
   if (status === "success") {
     return (
       <div
-        className="rounded-[1rem] border border-green-200 bg-green-50 px-5 py-5 text-green-950"
+        aria-live="polite"
+        className="rounded-[1.5rem] border border-neutral-200 bg-white p-5 text-neutral-950 shadow-[0_20px_60px_rgba(18,20,22,0.07)] sm:p-6"
         role="status"
       >
-        <p className="font-semibold">Заявка отправлена</p>
-        <p className="mt-1 text-sm leading-6 text-green-800">
-          Администратор автошколы свяжется с вами и уточнит детали.
-        </p>
+        <div className="flex items-start gap-4">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-700">
+            <CheckCircle2 aria-hidden="true" size={25} strokeWidth={2} />
+          </span>
+          <div>
+            <p className="text-sm font-semibold text-green-700">
+              Заявка отправлена
+            </p>
+            <p className="mt-1 text-xl font-semibold tracking-[-0.035em] sm:text-2xl">
+              {submittedValues?.name
+                ? `${submittedValues.name}, спасибо!`
+                : "Спасибо!"}
+            </p>
+          </div>
+        </div>
+
+        {submittedValues?.program ? (
+          <div className="mt-5 rounded-2xl bg-neutral-100 px-4 py-3">
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">
+              Вы выбрали
+            </p>
+            <p className="mt-1 text-sm font-semibold text-neutral-900">
+              {submittedValues.program}
+            </p>
+          </div>
+        ) : null}
+
+        <div className="mt-6">
+          <p className="text-sm font-semibold">Что будет дальше</p>
+          <ol className="mt-3 space-y-3 text-sm leading-6 text-neutral-600">
+            {[
+              "Уточним ближайший набор и удобный формат обучения.",
+              "Расскажем об оплате и ответим на вопросы.",
+              "Подскажем, какие документы понадобятся для начала.",
+            ].map((step) => (
+              <li className="flex gap-3" key={step}>
+                <span className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-neutral-950">
+                  <Check aria-hidden="true" size={13} strokeWidth={2.4} />
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="mt-6 border-t border-neutral-200 pt-5">
+          <p className="flex items-start gap-2 text-sm leading-6 text-neutral-600">
+            <Clock3
+              aria-hidden="true"
+              className="mt-1 shrink-0"
+              size={16}
+            />
+            Администратор свяжется с вами в рабочее время: {contactDetails.hours}
+          </p>
+          <Button asChild className="mt-4 w-full" variant="outline">
+            <a href={contactDetails.phoneHref}>
+              <Phone aria-hidden="true" size={17} />
+              Позвонить, если вопрос срочный
+            </a>
+          </Button>
+        </div>
       </div>
     );
   }

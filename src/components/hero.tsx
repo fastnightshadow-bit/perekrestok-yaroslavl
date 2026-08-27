@@ -44,7 +44,7 @@ export function Hero() {
         data-testid="hero-layout"
       >
         <div
-          className="absolute inset-x-6 bottom-[calc(1.25rem+env(safe-area-inset-bottom))] z-20 w-auto text-white sm:inset-x-10 sm:bottom-8 lg:relative lg:inset-auto lg:order-1 lg:col-span-5 lg:w-full lg:py-8 lg:text-neutral-950"
+          className="absolute inset-x-6 bottom-5 z-20 w-auto text-white sm:inset-x-10 sm:bottom-8 lg:relative lg:inset-auto lg:order-1 lg:col-span-5 lg:w-full lg:py-8 lg:text-neutral-950"
           data-testid="hero-content"
         >
           <p

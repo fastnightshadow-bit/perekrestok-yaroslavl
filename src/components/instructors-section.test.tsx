@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { renderWithEnrollment } from "@/test/render-with-enrollment";
 import { instructors } from "@/data/instructors";
@@ -46,6 +46,32 @@ describe("InstructorsSection", () => {
     }
 
     expect(screen.queryByText(/^4\.[89]$/)).not.toBeInTheDocument();
+  });
+
+  it("lets phone users swipe or step through the instructor cards", async () => {
+    const user = userEvent.setup();
+    renderWithEnrollment(<InstructorsSection />);
+
+    const rail = screen.getByRole("group", { name: "Лента инструкторов" });
+    const scrollBy = vi.fn();
+    Object.defineProperty(rail, "clientWidth", {
+      configurable: true,
+      value: 400,
+    });
+    Object.defineProperty(rail, "scrollBy", {
+      configurable: true,
+      value: scrollBy,
+    });
+
+    expect(rail).toHaveClass("flex", "snap-x", "overflow-x-auto", "sm:grid");
+    await user.click(
+      screen.getByRole("button", { name: "Следующие инструкторы" }),
+    );
+
+    expect(scrollBy).toHaveBeenCalledWith({
+      behavior: "smooth",
+      left: 340,
+    });
   });
 
   it("portals accessible details to the body and restores focus on Escape", async () => {

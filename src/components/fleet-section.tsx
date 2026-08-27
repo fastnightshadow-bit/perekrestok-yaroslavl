@@ -1,6 +1,7 @@
 "use client";
 
-import { Phone } from "lucide-react";
+import { ArrowLeft, ArrowRight, Phone } from "lucide-react";
+import { useRef } from "react";
 
 import { CarCard } from "@/components/car-card";
 import { EmptyState } from "@/components/empty-state";
@@ -15,6 +16,20 @@ type FleetSectionProps = {
 
 export function FleetSection({ items = trainingCars }: FleetSectionProps) {
   const { openEnrollment } = useEnrollment();
+  const fleetRef = useRef<HTMLDivElement>(null);
+
+  const scrollFleet = (direction: -1 | 1) => {
+    const container = fleetRef.current;
+
+    if (!container || typeof container.scrollBy !== "function") {
+      return;
+    }
+
+    container.scrollBy({
+      behavior: "smooth",
+      left: direction * Math.min(container.clientWidth * 0.85, 560),
+    });
+  };
 
   return (
     <section
@@ -43,15 +58,49 @@ export function FleetSection({ items = trainingCars }: FleetSectionProps) {
         </div>
 
         {items.length > 0 ? (
-          <div className="mt-10 grid min-w-0 gap-5 sm:mt-14 sm:grid-cols-2 xl:grid-cols-4">
-            {items.map((car) => (
-              <CarCard
-                car={car}
-                key={car.id}
-                onEnroll={(program) => openEnrollment(program, "fleet")}
-              />
-            ))}
-          </div>
+          <>
+            <div className="mt-9 flex items-center justify-between gap-4 sm:hidden">
+              <p className="text-sm text-neutral-500">
+                Листайте, чтобы увидеть все
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  aria-label="Предыдущие автомобили"
+                  onClick={() => scrollFleet(-1)}
+                  size="icon"
+                  variant="outline"
+                >
+                  <ArrowLeft aria-hidden="true" size={19} />
+                </Button>
+                <Button
+                  aria-label="Следующие автомобили"
+                  onClick={() => scrollFleet(1)}
+                  size="icon"
+                  variant="outline"
+                >
+                  <ArrowRight aria-hidden="true" size={19} />
+                </Button>
+              </div>
+            </div>
+            <div
+              aria-label="Лента учебных автомобилей"
+              className="-mx-5 mt-4 flex min-w-0 snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 scroll-px-5 [scrollbar-width:none] sm:mx-0 sm:mt-14 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden"
+              ref={fleetRef}
+              role="group"
+            >
+              {items.map((car) => (
+                <div
+                  className="w-[82vw] max-w-[22rem] shrink-0 snap-start sm:w-auto sm:max-w-none"
+                  key={car.id}
+                >
+                  <CarCard
+                    car={car}
+                    onEnroll={(program) => openEnrollment(program, "fleet")}
+                  />
+                </div>
+              ))}
+            </div>
+          </>
         ) : (
           <EmptyState
             description="Уточните доступные учебные автомобили у администратора при записи."

@@ -1,6 +1,6 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { renderWithEnrollment } from "@/test/render-with-enrollment";
 import { FleetSection } from "./fleet-section";
@@ -26,6 +26,34 @@ describe("FleetSection", () => {
     }
 
     expect(within(section).queryByText(/МКПП|АКПП/)).not.toBeInTheDocument();
+  });
+
+  it("lets phone users swipe or step through the training cars", async () => {
+    const user = userEvent.setup();
+    renderWithEnrollment(<FleetSection />);
+
+    const rail = screen.getByRole("group", {
+      name: "Лента учебных автомобилей",
+    });
+    const scrollBy = vi.fn();
+    Object.defineProperty(rail, "clientWidth", {
+      configurable: true,
+      value: 400,
+    });
+    Object.defineProperty(rail, "scrollBy", {
+      configurable: true,
+      value: scrollBy,
+    });
+
+    expect(rail).toHaveClass("flex", "snap-x", "overflow-x-auto", "sm:grid");
+    await user.click(
+      screen.getByRole("button", { name: "Следующие автомобили" }),
+    );
+
+    expect(scrollBy).toHaveBeenCalledWith({
+      behavior: "smooth",
+      left: 340,
+    });
   });
 
   it("passes the selected car to the shared enrollment flow", async () => {

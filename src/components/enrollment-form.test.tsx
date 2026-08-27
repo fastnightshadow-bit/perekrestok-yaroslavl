@@ -75,7 +75,17 @@ describe("EnrollmentForm", () => {
     expect(onSubmitted).toHaveBeenCalledWith(
       expect.objectContaining({ name: "Илья", program: "Категория B — АКПП" }),
     );
-    expect(screen.getByRole("status")).toHaveTextContent("Заявка отправлена");
+    const status = screen.getByRole("status");
+    expect(status).toHaveTextContent("Илья, спасибо!");
+    expect(status).toHaveTextContent("Заявка отправлена");
+    expect(status).toHaveTextContent("Категория B — АКПП");
+    expect(status).toHaveTextContent("Уточним ближайший набор");
+    expect(status).toHaveTextContent("Расскажем об оплате");
+    expect(status).toHaveTextContent("Подскажем, какие документы понадобятся");
+    expect(status).toHaveTextContent("Пн–Чт 12:00–17:00");
+    expect(
+      screen.getByRole("link", { name: /позвонить/i }),
+    ).toHaveAttribute("href", "tel:+74852700303");
   });
 
   it("keeps entered data and offers a phone fallback after a delivery error", async () => {

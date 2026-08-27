@@ -50,9 +50,23 @@ describe("cookie consent", () => {
     const user = userEvent.setup();
     renderConsent();
 
+    const banner = await screen.findByRole("complementary", {
+      name: "Настройки cookie",
+    });
+    expect(banner).toHaveClass(
+      "bottom-0",
+      "left-0",
+      "right-0",
+      "rounded-t-[1.25rem]",
+    );
+    expect(banner.className).not.toContain("5.25rem");
+    expect(banner).toHaveTextContent(
+      "Обязательные cookie нужны для работы сайта. Аналитика — только с вашего согласия.",
+    );
     expect(
-      await screen.findByRole("complementary", { name: "Настройки cookie" }),
-    ).toBeInTheDocument();
+      screen.getByRole("button", { name: "Принять" }).parentElement,
+    ).toHaveClass("grid", "grid-cols-2");
+
     await user.click(
       screen.getByRole("button", { name: "Только необходимые" }),
     );

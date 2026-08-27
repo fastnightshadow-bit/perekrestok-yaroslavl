@@ -18,7 +18,7 @@ export function InstructorCard({
   return (
     <article
       aria-label={instructor.name}
-      className="interactive-card group min-w-0 overflow-hidden rounded-[1.625rem] border border-neutral-200 bg-white shadow-[0_20px_60px_rgba(18,20,22,0.055)] hover:border-neutral-300 hover:shadow-[0_30px_75px_rgba(18,20,22,0.095)]"
+      className="interactive-card group h-full min-w-0 overflow-hidden rounded-[1.625rem] border border-neutral-200 bg-white shadow-[0_20px_60px_rgba(18,20,22,0.055)] hover:border-neutral-300 hover:shadow-[0_30px_75px_rgba(18,20,22,0.095)]"
     >
       <div className="relative aspect-[4/5] overflow-hidden bg-neutral-200">
         <Image

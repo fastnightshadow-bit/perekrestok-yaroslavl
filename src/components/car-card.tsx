@@ -15,7 +15,7 @@ export function CarCard({ car, onEnroll }: CarCardProps) {
   return (
     <article
       aria-label={car.model}
-      className="interactive-card group flex min-w-0 flex-col overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white shadow-[0_20px_60px_rgba(18,20,22,0.05)] hover:border-neutral-300 hover:shadow-[0_30px_80px_rgba(18,20,22,0.1)]"
+      className="interactive-card group flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white shadow-[0_20px_60px_rgba(18,20,22,0.05)] hover:border-neutral-300 hover:shadow-[0_30px_80px_rgba(18,20,22,0.1)]"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200">
         <Image

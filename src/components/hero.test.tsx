@@ -121,4 +121,13 @@ describe("Hero", () => {
       /@media \(max-width: 1023px\) \{[\s\S]*?#hero \.hero-enter,[\s\S]*?#hero \.hero-media-enter \{[\s\S]*?animation: none;[\s\S]*?transform: none;[\s\S]*?\}/,
     );
   });
+
+  it("keeps mobile copy anchored when Safari changes its safe-area inset", () => {
+    renderWithEnrollment(<Hero />);
+
+    const content = screen.getByTestId("hero-content");
+
+    expect(content).toHaveClass("bottom-5", "sm:bottom-8");
+    expect(content.className).not.toContain("safe-area-inset-bottom");
+  });
 });

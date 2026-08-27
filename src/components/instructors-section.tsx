@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
 
 import { EmptyState } from "@/components/empty-state";
 import { useEnrollment } from "@/components/enrollment-provider";
 import { InstructorCard } from "@/components/instructor-card";
 import { InstructorModal } from "@/components/instructor-modal";
+import { Button } from "@/components/ui/button";
 import { instructors, type Instructor } from "@/data/instructors";
 
 type InstructorsSectionProps = {
@@ -16,8 +18,22 @@ export function InstructorsSection({
   items = instructors,
 }: InstructorsSectionProps) {
   const { openEnrollment } = useEnrollment();
+  const instructorsRef = useRef<HTMLDivElement>(null);
   const [selectedInstructor, setSelectedInstructor] =
     useState<Instructor | null>(null);
+
+  const scrollInstructors = (direction: -1 | 1) => {
+    const container = instructorsRef.current;
+
+    if (!container || typeof container.scrollBy !== "function") {
+      return;
+    }
+
+    container.scrollBy({
+      behavior: "smooth",
+      left: direction * Math.min(container.clientWidth * 0.85, 560),
+    });
+  };
 
   const closeModal = useCallback(() => {
     setSelectedInstructor(null);
@@ -55,15 +71,49 @@ export function InstructorsSection({
         </div>
 
         {items.length > 0 ? (
-          <div className="mt-10 grid min-w-0 gap-5 sm:mt-14 sm:grid-cols-2 xl:grid-cols-4">
-            {items.map((instructor) => (
-              <InstructorCard
-                instructor={instructor}
-                key={instructor.id}
-                onOpen={setSelectedInstructor}
-              />
-            ))}
-          </div>
+          <>
+            <div className="mt-9 flex items-center justify-between gap-4 sm:hidden">
+              <p className="text-sm text-neutral-500">
+                Листайте, чтобы увидеть всех
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  aria-label="Предыдущие инструкторы"
+                  onClick={() => scrollInstructors(-1)}
+                  size="icon"
+                  variant="outline"
+                >
+                  <ArrowLeft aria-hidden="true" size={19} />
+                </Button>
+                <Button
+                  aria-label="Следующие инструкторы"
+                  onClick={() => scrollInstructors(1)}
+                  size="icon"
+                  variant="outline"
+                >
+                  <ArrowRight aria-hidden="true" size={19} />
+                </Button>
+              </div>
+            </div>
+            <div
+              aria-label="Лента инструкторов"
+              className="-mx-5 mt-4 flex min-w-0 snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 scroll-px-5 [scrollbar-width:none] sm:mx-0 sm:mt-14 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden"
+              ref={instructorsRef}
+              role="group"
+            >
+              {items.map((instructor) => (
+                <div
+                  className="w-[82vw] max-w-[22rem] shrink-0 snap-start sm:w-auto sm:max-w-none"
+                  key={instructor.id}
+                >
+                  <InstructorCard
+                    instructor={instructor}
+                    onOpen={setSelectedInstructor}
+                  />
+                </div>
+              ))}
+            </div>
+          </>
         ) : (
           <EmptyState
             description="Позвоните администратору — актуальный список инструкторов подскажем по телефону."
