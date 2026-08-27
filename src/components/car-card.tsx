@@ -41,12 +41,14 @@ export function CarCard({ car, onEnroll }: CarCardProps) {
           <span>{car.instructors.join(", ")}</span>
         </div>
 
-        <Button
-          className="mt-6 w-full"
-          onClick={() => onEnroll(`Автомобиль: ${car.model}`)}
-        >
-          Записаться
-        </Button>
+        <div className="mt-auto pt-6">
+          <Button
+            className="w-full"
+            onClick={() => onEnroll(`Автомобиль: ${car.model}`)}
+          >
+            Записаться
+          </Button>
+        </div>
       </div>
     </article>
   );

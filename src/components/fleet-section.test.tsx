@@ -28,6 +28,18 @@ describe("FleetSection", () => {
     expect(within(section).queryByText(/МКПП|АКПП/)).not.toBeInTheDocument();
   });
 
+  it("pins every enrollment button to the bottom of its car card", () => {
+    renderWithEnrollment(<FleetSection />);
+
+    for (const card of screen.getAllByRole("article")) {
+      const action = within(card).getByRole("button", {
+        name: "Записаться",
+      }).parentElement;
+
+      expect(action).toHaveClass("mt-auto", "pt-6");
+    }
+  });
+
   it("lets phone users swipe or step through the training cars", async () => {
     const user = userEvent.setup();
     renderWithEnrollment(<FleetSection />);
