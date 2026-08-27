@@ -65,9 +65,6 @@ export function InstructorsSection({
             Опытные наставники, которые спокойно объясняют, поддерживают и
             помогают почувствовать уверенность за рулём.
           </p>
-          <p className="mt-3 text-xs font-medium uppercase tracking-[0.1em] text-neutral-600">
-            Имена, стаж и состав команды — по официальным материалам автошколы
-          </p>
         </div>
 
         {items.length > 0 ? (

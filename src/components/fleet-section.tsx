@@ -48,10 +48,6 @@ export function FleetSection({ items = trainingCars }: FleetSectionProps) {
           >
             Автопарк
           </h2>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-600 sm:text-lg sm:leading-8">
-            Реальные модели, которые указаны у инструкторов автошколы на
-            официальном сайте.
-          </p>
           <p className="mt-3 text-xs font-medium uppercase tracking-[0.1em] text-neutral-600">
             Доступность конкретного автомобиля уточняйте при записи
           </p>
